@@ -33,5 +33,5 @@ func QuayResponse(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleQuayResponse(body []byte) {
-	fmt.Println("Message:", body)
+	fmt.Println("Message:", string(body))
 }
