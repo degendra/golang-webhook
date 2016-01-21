@@ -1,27 +1,12 @@
 package main
 import (
+	"log"
+	"net/http"
 	"fmt"
-	"time"
-	"github.com/phayes/hookserve/hookserve"
 )
 
-
-
 func main() {
-
-	server := hookserve.NewServer()
-	server.Port = 8888
-	server.Secret = "supersecretcode"
-	server.GoListenAndServe()
-
-	fmt.Println("Server Running....")
-
-	for {
-		select {
-		case event := <-server.Events:
-			fmt.Println(event.Owner + " " + event.Repo + " " + event.Branch + " " + event.Commit)
-		default:
-			time.Sleep(100)
-		}
-	}
+	fmt.Println("Starting Server ....")
+	router := NewRouter()
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
