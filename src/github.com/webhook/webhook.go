@@ -1,12 +1,12 @@
 package main
 import (
+	"fmt"
 	"log"
 	"net/http"
-	"fmt"
 )
 
 func main() {
-	fmt.Println("Starting Server ....")
+	fmt.Println("Server Started.")
 	router := NewRouter()
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

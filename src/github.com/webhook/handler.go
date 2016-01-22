@@ -6,6 +6,9 @@ import (
 	"log"
 	"io/ioutil"
 	"io"
+	"github.com/webhook/models"
+	"os/exec"
+	"strings"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -33,5 +36,22 @@ func QuayResponse(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleQuayResponse(body []byte) {
-	fmt.Println("Message:", string(body))
+
+	fmt.Println("Message Received:", string(body))
+
+	quayResponse := models.Response{}
+	err := json.Unmarshal(body, &quayResponse)
+	if err != nil {
+		log.Println(err)
+	}
+
+	if strings.EqualFold(quayResponse.UpdatedTags[0], "latest") {
+		out, exec_err := exec.Command("/bin/sh", "start.sh", "-n", quayResponse.Name).Output()
+		if exec_err != nil {
+			log.Println(exec_err)
+		}
+
+		fmt.Println("output is:", string(out))
+	}
+
 }
